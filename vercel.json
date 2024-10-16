@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "stripesuccessapi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "stripesuccessapi.py"
+  }
+]
+  }
