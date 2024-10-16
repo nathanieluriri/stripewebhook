@@ -193,7 +193,7 @@ async def webhook(request: Request):
         print('Payment for {} succeeded'.format(payment_intent['amount']))
         send_payment_complete_email()
         process_successful_payments()
-        send_push_notifications()
+        send_push_notifications(ONESIGNALAPIKEY)
         # Handle the successful payment intent here if needed
     elif event['type'] == 'payment_method.attached':
         payment_method = event['data']['object']  # contains a stripe.PaymentMethod
