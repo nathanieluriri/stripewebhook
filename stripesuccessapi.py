@@ -21,6 +21,37 @@ stripe.api_key = os.getenv("STRIPE")
 
 # Replace 'your_connection_string' with your actual MongoDB connection string
 client = MongoClient(os.getenv("MONGO_URI"))
+ONESIGNALAPIKEY = os.getenv("ONESIGNAL")
+
+
+def send_push_notifications(APIKEY):
+    import requests
+    import json
+
+
+    # Define the URL and headers
+    url = "https://api.onesignal.com/notifications"
+    headers = {
+        "Content-Type": "application/json; charset=utf-8",
+        "Authorization": f"Basic {APIKEY}"
+    }
+
+    # Define the payload
+    payload = {
+        "app_id": "c0781cfa-4181-49ff-be9a-6c8ac11e5421",
+        "contents": {"en": "Push NOtification was triggered by making triggering a payment intent success event"},
+        "headings": {"en": "New Order"},
+        "priority": 10,
+        "included_segments": ["All"]
+    }
+
+    # Make the POST request
+    response = requests.post(url, headers=headers, data=json.dumps(payload))
+
+    # Print the response
+    print(f"Status Code: {response.status_code}")
+    print(f"Response: {response.json()}")
+
 
 
 
@@ -162,6 +193,7 @@ async def webhook(request: Request):
         print('Payment for {} succeeded'.format(payment_intent['amount']))
         send_payment_complete_email()
         process_successful_payments()
+        send_push_notifications()
         # Handle the successful payment intent here if needed
     elif event['type'] == 'payment_method.attached':
         payment_method = event['data']['object']  # contains a stripe.PaymentMethod
