@@ -114,13 +114,13 @@ def process_successful_payments():
                             url = "https://api.onesignal.com/notifications"
                             headers = {
                                 "Content-Type": "application/json; charset=utf-8",
-                                "Authorization": "Basic M2RhNmI5MGUtNTk0Mi00ZmFiLThjN2UtYTI1YWU0ZWQwMmM1"
+                                "Authorization": f"Basic {ONESIGNALAPIKEY}"
                             }
 
                             # Define the payload
                             payload = {
                                 "app_id": "c0781cfa-4181-49ff-be9a-6c8ac11e5421",
-                                "contents": {"en": f"Pick Up Location: {doc['pick_up_details']['mainText']} Drop Off Location: {doc['drop_off_details']['mainText']}"},
+                                "contents": {"en": f"New Pick Up at: {doc['pick_up_details']['mainText']} By Pick Up TIme {doc['schedule']['pickUpTime']} and Drop Off at: {doc['drop_off_details']['mainText']}"},
                                 "headings": {"en": "A new Order Just came In"},
                                 "priority": 10,
                                 "included_segments": ["All"]
@@ -147,7 +147,7 @@ smtp_port = 465
 
 # Function to send a simple payment complete email
 def send_payment_complete_email():
-    customer_email = 'uririnathaniel@gmail.com'
+    customer_email = 'Michaeljekwu@outlook.com'
     email_subject = 'A Was Payment Completed Successfully! 💰'
     email_body = """
     Hi there,
@@ -165,6 +165,44 @@ def send_payment_complete_email():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
 
+def send_payment_complete_email1():
+    customer_email = 'helpdesk@247doordelivery.co.uk'
+    email_subject = 'A Was Payment Completed Successfully! 💰'
+    email_body = """
+    Hi there,
+
+    We are pleased to inform You that A payment has been completed successfully. 
+
+    Best regards,
+    
+    """
+    
+    try:
+        with yagmail.SMTP(smtp_user, smtp_password, host=smtp_host, port=smtp_port) as yag:
+            yag.send(to=customer_email, subject=email_subject, contents=email_body)
+            print(f"Email sent to {customer_email} successfully!")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
+
+
+def send_payment_complete_email2():
+    customer_email = 'Michaeljekwu@247doordelivery.co.uk'
+    email_subject = 'A Was Payment Completed Successfully! 💰'
+    email_body = """
+    Hi there,
+
+    We are pleased to inform You that A payment has been completed successfully. 
+
+    Best regards,
+    
+    """
+    
+    try:
+        with yagmail.SMTP(smtp_user, smtp_password, host=smtp_host, port=smtp_port) as yag:
+            yag.send(to=customer_email, subject=email_subject, contents=email_body)
+            print(f"Email sent to {customer_email} successfully!")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
 
 
 
@@ -191,9 +229,12 @@ async def webhook(request: Request):
     if event['type'] == 'payment_intent.succeeded':
         payment_intent = event['data']['object']  # contains a stripe.PaymentIntent
         print('Payment for {} succeeded'.format(payment_intent['amount']))
-        send_payment_complete_email()
         process_successful_payments()
-        send_push_notifications(ONESIGNALAPIKEY)
+        send_payment_complete_email()
+        send_payment_complete_email1()
+        send_payment_complete_email2()
+        
+        
         # Handle the successful payment intent here if needed
     elif event['type'] == 'payment_method.attached':
         payment_method = event['data']['object']  # contains a stripe.PaymentMethod
