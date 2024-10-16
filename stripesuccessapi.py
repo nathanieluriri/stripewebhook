@@ -2,15 +2,18 @@ from fastapi import FastAPI, HTTPException, Request
 import stripe
 import json
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Initialize FastAPI app
 app = FastAPI()
 
 # Your test secret API key
-stripe.api_key = 'sk_test_51PGegQEM4mSGBUuffKdxGnG1UKfeGgF0gQPmPAbvzZ5BRHYH37qt86nsgPgo2jbEDSI3pDSGCdDYV55u03REXSsa009qtghYnJ'
+stripe.api_key = os.getenv("STRIPE")
 
 # Replace this endpoint secret with your endpoint's unique secret
-endpoint_secret = 'whsec_9403fdd9539dcefe956f4a9b876b5677a1fbe8fa119593a76edd093a0f517cea'  # Use your actual endpoint secret
+endpoint_secret = os.getenv("ENDPOINT")  # Use your actual endpoint secret
 
 @app.post("/webhook")
 async def webhook(request: Request):
