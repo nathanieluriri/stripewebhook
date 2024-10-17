@@ -41,6 +41,8 @@ def send_push_notifications(APIKEY):
         "app_id": "c0781cfa-4181-49ff-be9a-6c8ac11e5421",
         "contents": {"en": "Push NOtification was triggered by making triggering a payment intent success event"},
         "headings": {"en": "New Order"},
+        "android_sound": "notification_sound",
+        "small_icon": "notification_icon",
         "priority": 10,
         "included_segments": ["All"]
     }
@@ -117,12 +119,19 @@ def process_successful_payments():
                                 "Authorization": f"Basic {ONESIGNALAPIKEY}"
                             }
 
+
                             # Define the payload
                             payload = {
                                 "app_id": "c0781cfa-4181-49ff-be9a-6c8ac11e5421",
                                 "contents": {"en": f"New Pick Up at: {doc['pick_up_details']['mainText']} By Pick Up TIme {doc['schedule']['pickUpTime']} and Drop Off at: {doc['drop_off_details']['mainText']}"},
                                 "headings": {"en": "A new Order Just came In"},
                                 "priority": 10,
+                                "sound": "notification_sound",
+                                "small_icon": "notification_icon",
+                                "large_icon":"notification_icon",
+                                "android_sound": "notification_sound",
+                                "android_channel_id": "8712d174-e24e-409d-8f1e-33144b2c1e33",
+                                "small_icon": "notification_icon",
                                 "included_segments": ["All"]
                             }
 
