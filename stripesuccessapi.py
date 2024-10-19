@@ -157,7 +157,7 @@ smtp_port = 465
 # Function to send a simple payment complete email
 def send_payment_complete_email():
     customer_email = 'Michaeljekwu@outlook.com'
-    email_subject = 'A Was Payment Completed Successfully! 💰'
+    email_subject = 'A Payment Was Completed Successfully! 💰'
     email_body = """
     Hi there,
 
@@ -176,7 +176,7 @@ def send_payment_complete_email():
 
 def send_payment_complete_email1():
     customer_email = 'helpdesk@247doordelivery.co.uk'
-    email_subject = 'A Was Payment Completed Successfully! 💰'
+    email_subject = 'A  Payment Was Completed Successfully! 💰'
     email_body = """
     Hi there,
 
@@ -196,7 +196,7 @@ def send_payment_complete_email1():
 
 def send_payment_complete_email2():
     customer_email = 'Michaeljekwu@247doordelivery.co.uk'
-    email_subject = 'A Was Payment Completed Successfully! 💰'
+    email_subject = 'A Payment Was Completed Successfully! 💰'
     email_body = """
     Hi there,
 
