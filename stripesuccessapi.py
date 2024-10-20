@@ -77,15 +77,15 @@ def process_successful_payments():
         
 
         for payment in successful_payments:
+           
             if payment['status'] == 'succeeded':
-                documents = collection.find({'email': payment['buyerEmail']})
+                buyersEmail = payment['buyerEmail']
+
+                documents = collection.find({'email': {"$regex":buyersEmail,"$options":"i"}})
                 for doc in documents:
-                    if (doc['pick_up_details']['mainText'] in payment['itemsBought'][0]['productDescription']) and \
-                       (doc['drop_off_details']['mainText'] in payment['itemsBought'][0]['productDescription']) and \
-                       (doc['schedule']['pickUpTime'] in payment['itemsBought'][0]['productDescription']) and \
-                       (doc['schedule']['pickUpDate'] in payment['itemsBought'][0]['productDescription']) and \
-                       (doc['schedule']['dropOffTime'] in payment['itemsBought'][0]['productDescription']) and \
-                       (doc['schedule']['dropOffDate'] in payment['itemsBought'][0]['productDescription']):
+                    
+                    
+                    if (doc['pick_up_details']['mainText'] in payment['itemsBought'][0]['productDescription']) and (doc['drop_off_details']['mainText'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['pickUpTime'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['pickUpDate'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['dropOffTime'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['dropOffDate'] in payment['itemsBought'][0]['productDescription']):
                         
                         # Create a document to insert
                         document = {
