@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException, Request
 import stripe
 import yagmail
 import pymongo
-
+from stripesuccessapi import process_successful_payments
 import json
 from bson import ObjectId
 
@@ -50,4 +50,6 @@ def send_push_notifications(APIKEY):
 
 
 
-send_push_notifications(ONESIGNALAPIKEY)
+# send_push_notifications(ONESIGNALAPIKEY)
+
+process_successful_payments()
