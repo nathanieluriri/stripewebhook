@@ -62,6 +62,7 @@ def process_successful_payments():
         import requests
         db = client['Deliveries']
         collection = db['users']
+        imageCollection = db['ImageLinks']
         # Fetch the data from the API
         response = requests.get('https://auto-gen-payment-link-stripe.vercel.app/api/v1/successful-payments')
 
@@ -82,11 +83,13 @@ def process_successful_payments():
                 buyersEmail = payment['buyerEmail']
 
                 documents = collection.find({'email': {"$regex":buyersEmail,"$options":"i"}})
+               
+                
                 for doc in documents:
                     
                     
                     if (doc['pick_up_details']['mainText'] in payment['itemsBought'][0]['productDescription']) and (doc['drop_off_details']['mainText'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['pickUpTime'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['pickUpDate'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['dropOffTime'] in payment['itemsBought'][0]['productDescription']) and (doc['schedule']['dropOffDate'] in payment['itemsBought'][0]['productDescription']):
-                        
+                        imagelink = imageCollection.find_one({'_id':doc['image_id']})
                         # Create a document to insert
                         document = {
                             '_id': payment['id'],
@@ -104,7 +107,9 @@ def process_successful_payments():
                             'pickupLocation': doc['pick_up_details']['mainText'],
                             'origin_place_id': doc['pick_up_details']['placeId'],
                             'destination_place_id': doc['drop_off_details']['placeId'],
-                            'status': "pick Up"
+                            'status': "pick Up",
+                            'image_link':imagelink,
+                            'additional_directions':doc['additional_info']
                         }
                         
                         deliveries_collection = db['deliveries']
