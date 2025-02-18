@@ -155,7 +155,7 @@ def process_successful_payments():
 endpoint_secret = os.getenv("ENDPOINT")  # Use your actual endpoint secret
 # SMTP server details
 smtp_user = 'admin@247doordelivery.co.uk'
-smtp_password = 'Password10!'
+smtp_password = 'Nl8^rjhbE=S'
 smtp_host = 'smtp.hostinger.com'
 smtp_port = 465
 
